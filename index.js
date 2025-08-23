@@ -32,8 +32,8 @@ app.post('/send', async (req, res) => {
         `,
         attachments: [
           {
-            filename: 'invite.png',
-            path: path.join(__dirname, 'images', 'invite.png'),
+            filename: 'flyer.jpg',
+            path: path.join(__dirname, 'images', 'flyer.jpg'),
             cid: 'invite@aff', // 本文内のsrcと一致させる
           },
         text: `8/30.AFF\n\n`,
