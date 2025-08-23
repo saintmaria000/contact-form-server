@@ -30,13 +30,13 @@ app.post('/send', async (req, res) => {
         あなたを Event にご招待します。</h1>
         <img src="cid:invite@aff" />
         `,
+        text: '8/30.AFF\n\n',
         attachments: [
           {
             filename: 'flyer.jpg',
             path: path.join(__dirname, 'images', 'flyer.jpg'),
             cid: 'invite@aff', // 本文内のsrcと一致させる
           },
-        text: '8/30.AFF\n\n',
     }); 
 
     res.status(200).send({ success: true });
