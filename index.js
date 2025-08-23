@@ -37,7 +37,7 @@ app.post('/send', async (req, res) => {
             path: path.join(__dirname, 'images', 'flyer.jpg'),
             cid: 'invite@aff', // 本文内のsrcと一致させる
           },
-        ]
+        ],
     }); 
 
     res.status(200).send({ success: true });
