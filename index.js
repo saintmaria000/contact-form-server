@@ -5,7 +5,14 @@ const nodemailer = require('nodemailer');
 const path = require('path'); // ← 画像添付用に追加
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  origin: "https://invitationtonewworld.web.app", // フロントのURL
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // 動作確認用
