@@ -27,6 +27,15 @@ app.post('/send', async (req, res) => {
       }
     });
 
+    // 🔍 ここを追加（接続確認）
+    transporter.verify((err, success) => {
+      if (err) {
+        console.error("SMTP接続失敗:", err);
+      } else {
+        console.log("SMTP接続成功!");
+      }
+    });
+
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: email,
@@ -49,8 +58,8 @@ app.post('/send', async (req, res) => {
       attachments: [
         {
           filename: 'flyer.jpg',
-          path: path.join(__dirname, 'images', 'flyer.jpg'), // プロジェクト内の画像パス
-          cid: 'invite@aff' // ← 上のHTMLで指定したcidと一致させる
+          path: path.join(__dirname, 'images', 'flyer.jpg'),
+          cid: 'invite@aff'
         }
       ]
     });
