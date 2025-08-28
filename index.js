@@ -7,6 +7,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// 動作確認用
+app.get('/', (req, res) => {
+  res.send('Server is running!');
+});
+
 app.post('/send', async (req, res) => {
   const { name, email, message } = req.body;
 
@@ -14,7 +19,7 @@ app.post('/send', async (req, res) => {
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === 'boolean',
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
@@ -22,29 +27,26 @@ app.post('/send', async (req, res) => {
     });
 
     await transporter.sendMail({
-        from: process.env.SMTP_USER, // ← 送信者（あなた）
-        to: email, // ← フォーム入力者宛に送る
-        subject: `8/３０.Invite Ticket`,
-        html: `
-        <h1>こんにちは${name} さん\n\n
-        あなたを Event にご招待します。</h1>
-        <img src="cid:invite@aff" />
-        `,
-        text: `8/30.AFF\n\n`,
-        attachments: [
-          {
-            filename: 'flyer.jpg',
-            path: path.join(__dirname, 'images', 'flyer.jpg'),
-            cid: 'invite@aff', // 本文内のsrcと一致させる
-          },
-        ],
-    }); 
+      from: process.env.SMTP_USER,
+      to: email,
+      subject: `ご連絡ありがとうございます`,
+      text: `こんにちは ${name} さん！\n\nあなたにささやかなご招待をお送りします。\n\n${message || ''}`,
+    });
 
     res.status(200).send({ success: true });
   } catch (error) {
-    console.error(error);
+    console.error('メール送信エラー:', error);
     res.status(500).send({ success: false, error: error.message });
   }
+});
+
+// エラー補足
+process.on('uncaughtException', err => {
+  console.error('Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', err => {
+  console.error('Unhandled Rejection:', err);
 });
 
 app.listen(process.env.PORT || 3000, () => {
