@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const path = require('path'); // ← 画像添付用に追加
 
 const app = express();
 app.use(cors());
@@ -29,8 +30,29 @@ app.post('/send', async (req, res) => {
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: email,
-      subject: `ご連絡ありがとうございます`,
-      text: `こんにちは ${name} さん！\n\nあなたにささやかなご招待をお送りします。\n\n${message || ''}`,
+      subject: `8/30 AFF　こんにちは ${name} さん！`,
+      // 本文（テキスト版）
+      text: `あなたを以下のパーティーにご招待します。\n\n${message || ''}`,
+
+      // 本文（HTML版・画像埋め込み）
+      html: `
+        <h2>こんにちは ${name} さん！</h2>
+        <p>あなたにささやかなご招待をお送りします 🎉</p>
+        <p>
+          <img src="cid:invite@aff" alt="イベントフライヤー"
+               style="max-width:400px; border:1px solid #ccc;" />
+        </p>
+        <p>${message || ''}</p>
+      `,
+
+      // 添付ファイル（本文埋め込み用）
+      attachments: [
+        {
+          filename: 'flyer.jpg',
+          path: path.join(__dirname, 'images', 'flyer.jpg'), // プロジェクト内の画像パス
+          cid: 'invite@aff' // ← 上のHTMLで指定したcidと一致させる
+        }
+      ]
     });
 
     res.status(200).send({ success: true });
