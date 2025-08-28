@@ -52,7 +52,6 @@ app.post('/send', async (req, res) => {
 
       // 本文（HTML版・画像埋め込み）
       html: `
-        <h2>こんにちは ${name} さん！</h2>
         <p>あなたにささやかなご招待をお送りします 🎉</p>
         <p>
           <img src="cid:invite@aff" alt="イベントフライヤー"
