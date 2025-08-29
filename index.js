@@ -35,7 +35,7 @@ app.post('/send', async (req, res) => {
       },
       body: JSON.stringify({
         from: `<${process.env.FROM_ADDRESS}>`, 
-        to: email,
+        to: {email: email},
         subject: "8/30 AFF へのご招待。",
         text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
         html: `
