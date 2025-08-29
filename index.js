@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
-const path = require('path'); // ← 画像添付用に追加
+const path = require('path');
 
 const app = express();
 
@@ -16,7 +16,7 @@ const corsOptions = {
   allowedHeaders: ["Content-Type"],
 };
 app.use(cors(corsOptions));
-app.options('/send', cors(corsOptions)); // ← プリフライト対応
+app.options('/send', cors(corsOptions)); // プリフライト対応
 
 app.use(express.json());
 
@@ -43,32 +43,36 @@ app.post('/send', async (req, res) => {
       from: process.env.SMTP_USER,
       to: email,
       subject: `8/30 AFF へご招待。`,
-      
+
       // 本文（テキスト版）
       text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
 
-      // 本文（HTML版・画像埋め込み）
+      // 本文（HTML版）
       html: `
-        // <p>
-        //   <img src="cid:invite@aff" alt="イベントフライヤー"
-        //        style="max-width:400px; border:1px solid #ccc;" />
-        // </p>
+        <p>こんにちは ${name} さん！</p>
+        <p>あなたを以下のパーティーにご招待します 🎉</p>
+        <!-- 画像を付けたい場合は下をコメントアウト外してください
+        <p>
+          <img src="cid:invite@aff" alt="イベントフライヤー"
+               style="max-width:400px; border:1px solid #ccc;" />
+        </p>
+        -->
       `,
 
-      // 添付ファイル（本文埋め込み用）
+      // 添付ファイル（画像埋め込み用）
       // attachments: [
       //   {
       //     filename: 'flyer.jpg',
-      //     path: path.join(__dirname, 'images', 'flyer.jpg'), // ← サーバー内の画像パス
-      //     cid: 'invite@aff' // ← 上のHTMLと一致
+      //     path: path.join(__dirname, 'images', 'flyer.jpg'),
+      //     cid: 'invite@aff'
       //   }
       // ]
     });
 
-    res.status(200).send({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error('メール送信エラー:', error);
-    res.status(500).send({ success: false, error: error.message });
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 
