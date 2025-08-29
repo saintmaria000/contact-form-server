@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const fetch = require('node-fetch'); // ← API呼び出しに必要
 
 const app = express();
 
@@ -28,7 +27,7 @@ app.post('/send', async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    const response = await fetch("https://api.maileroo.com/send", {
+    const response = await fetch("https://api.maileroo.com/api/v2/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
