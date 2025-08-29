@@ -34,7 +34,7 @@ app.post('/send', async (req, res) => {
         "Authorization": `Bearer ${process.env.MAILEROO_API_KEY}` // ← MailerooのAPIキー
       },
       body: JSON.stringify({
-        from: `招待係 <${process.env.FROM_ADDRESS}>`, // 例: no-reply@xxxx.maileroo.org
+        from: `<${process.env.FROM_ADDRESS}>`, // 例: no-reply@xxxx.maileroo.org
         to: email,
         subject: "8/30 AFF へご招待。",
         text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
