@@ -27,7 +27,7 @@ app.post('/send', async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    const response = await fetch("https://api.maileroo.com/v1/send", {
+    const response = await fetch("https://api.maileroo.com/send", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
