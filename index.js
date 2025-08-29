@@ -42,10 +42,10 @@ app.post('/send', async (req, res) => {
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: email,
-      subject: `8/30 AFF　こんにちは ${name} さん！`,
+      subject: `8/30 AFF へご招待。`,
       
       // 本文（テキスト版）
-      text: `あなたを以下のパーティーにご招待します🎉\n\n`,
+      text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
 
       // 本文（HTML版・画像埋め込み）
       html: `
