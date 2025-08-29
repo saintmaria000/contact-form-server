@@ -31,7 +31,7 @@ app.post('/send', async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": Bearer ${process.env.MAILEROO_API_KEY} // ← MailerooのAPIキー
+        "Authorization": `Bearer ${process.env.MAILEROO_API_KEY}` // ← MailerooのAPIキー
       },
       body: JSON.stringify({
         from: `<${process.env.FROM_ADDRESS}>`, 
