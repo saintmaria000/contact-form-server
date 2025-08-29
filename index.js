@@ -27,16 +27,16 @@ app.post('/send', async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    const response = await fetch("https://api.maileroo.com/api/v2/emails", {
+    const response = await fetch("https://smtp.maileroo.com/api/v2/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.MAILEROO_API_KEY}` // ← MailerooのAPIキー
+        "Authorization": Bearer ${process.env.MAILEROO_API_KEY} // ← MailerooのAPIキー
       },
       body: JSON.stringify({
-        from: `<${process.env.FROM_ADDRESS}>`, // 例: no-reply@xxxx.maileroo.org
+        from: `<${process.env.FROM_ADDRESS}>`, 
         to: email,
-        subject: "8/30 AFF へご招待。",
+        subject: "8/30 AFF へのご招待。",
         text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
         html: `
           <p>こんにちは ${name} さん！</p>
@@ -45,7 +45,6 @@ app.post('/send', async (req, res) => {
             <img src="cid:invite@aff" alt="イベントフライヤー"
             style="max-width:400px; border:1px solid #ccc;" />
           </p>
-          <!-- APIでも画像をBase64で送れる。埋め込みする場合はattachmentsを使う -->
         `
       })
     });
@@ -61,11 +60,11 @@ app.post('/send', async (req, res) => {
 
   } catch (error) {
     console.error('メール送信エラー詳細:', error);
-    // ここを修正 → message か JSON にして返す
     res.status(500).json({
       success: false,
       error: error.message || JSON.stringify(error)
     });
+  } // ← このカッコを追加
 });
 
 // エラー補足
