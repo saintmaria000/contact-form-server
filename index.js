@@ -64,13 +64,13 @@ app.post('/send', async (req, res) => {
       `,
 
       // 添付ファイル（本文埋め込み用）
-      attachments: [
-        {
-          filename: 'flyer.jpg',
-          path: path.join(__dirname, 'images', 'flyer.jpg'), // ← サーバー内の画像パス
-          cid: 'invite@aff' // ← 上のHTMLと一致
-        }
-      ]
+      // attachments: [
+      //   {
+      //     filename: 'flyer.jpg',
+      //     path: path.join(__dirname, 'images', 'flyer.jpg'), // ← サーバー内の画像パス
+      //     cid: 'invite@aff' // ← 上のHTMLと一致
+      //   }
+      // ]
     });
 
     res.status(200).send({ success: true });
