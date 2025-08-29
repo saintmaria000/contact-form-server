@@ -29,13 +29,14 @@ app.post('/send', async (req, res) => {
   const { name, email } = req.body;
 
   try {
+    // ✅ Maileroo の SMTP サーバーを利用
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === 'true',
+      host: "smtp.maileroo.com",   // 固定
+      port: 587,                   // Maileroo は 587 (TLS) を推奨
+      secure: false,               // STARTTLS なので false
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
+        user: process.env.SMTP_USER, // 例: test@xxxx.maileroo.org
+        pass: process.env.SMTP_PASS  // Maileroo が発行したパスワード
       }
     });
 
@@ -51,25 +52,20 @@ app.post('/send', async (req, res) => {
       html: `
         <p>こんにちは ${name} さん！</p>
         <p>あなたを以下のパーティーにご招待します 🎉</p>
-        
-        <!-- 画像を付けたい場合は下をコメントアウト外してください
         <p>
           <img src="cid:invite@aff" alt="イベントフライヤー"
                style="max-width:400px; border:1px solid #ccc;" />
         </p>
-        -->
-        
       `,
 
       // 添付ファイル（画像埋め込み用）
-      // attachments: [
-      //   {
-      //     filename: 'flyer.jpg',
-      //     path: path.join(__dirname, 'images', 'flyer.jpg'),
-      //     cid: 'invite@aff'
-      //   }
-      // ]
-      
+      attachments: [
+        {
+          filename: 'flyer.jpg',
+          path: path.join(__dirname, 'images', 'flyer.jpg'),
+          cid: 'invite@aff'
+        }
+      ]
     });
 
     res.status(200).json({ success: true });
@@ -81,9 +77,9 @@ app.post('/send', async (req, res) => {
 
 // ✅ サーバー起動時にSMTP接続テスト
 const testTransporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: parseInt(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === 'true',
+  host: "smtp.maileroo.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS
@@ -106,6 +102,7 @@ process.on('unhandledRejection', err => {
   console.error('Unhandled Rejection:', err);
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log('Server is running');
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`✅ maileroo Server is running on http://localhost:${port}`);
 });
