@@ -32,7 +32,7 @@ app.post('/send', async (req, res) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": Bearer ${process.env.MAILEROO_API_KEY} // ← MailerooのAPIキー
+        "Authorization": `Bearer ${process.env.MAILEROO_API_KEY}` // ← MailerooのAPIキー
       },
       body: JSON.stringify({
         from: `招待係 <${process.env.FROM_ADDRESS}>`, // 例: no-reply@xxxx.maileroo.org
