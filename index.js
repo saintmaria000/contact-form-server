@@ -42,6 +42,10 @@ app.post('/send', async (req, res) => {
         html: `
           <p>こんにちは ${name} さん！</p>
           <p>あなたを以下のパーティーにご招待します 🎉</p>
+          <p>
+            <img src="cid:invite@aff" alt="イベントフライヤー"
+            style="max-width:400px; border:1px solid #ccc;" />
+          </p>
           <!-- APIでも画像をBase64で送れる。埋め込みする場合はattachmentsを使う -->
         `
       })
