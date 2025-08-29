@@ -8,7 +8,9 @@ const app = express();
 
 // ✅ CORS設定
 const corsOptions = {
-  origin: "https://invitationtonewworld.web.app", // フロントのURL
+  origin: [
+    "https://invitationtonewworld.web.app",
+    "https://invitationtonewworld.firebaseapp.com"],// フロントのURL
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 };
