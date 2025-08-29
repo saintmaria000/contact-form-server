@@ -51,18 +51,21 @@ app.post('/send', async (req, res) => {
     });
 
     const data = await response.json();
-    console.log("Maileroo response:", data);
 
-    if (response.ok) {
-      res.status(200).json({ success: true, data });
-    } else {
-      res.status(500).json({ success: false, error: data });
+    if (!response.ok) {
+      console.error("Maileroo API エラー:", data);
+      return res.status(500).json({ success: false, error: data });
     }
 
+    res.status(200).json({ success: true, data });
+
   } catch (error) {
-    console.error("メール送信エラー:", error);
-    res.status(500).json({ success: false, error: error.message });
-  }
+    console.error('メール送信エラー詳細:', error);
+    // ここを修正 → message か JSON にして返す
+    res.status(500).json({
+      success: false,
+      error: error.message || JSON.stringify(error)
+    });
 });
 
 // エラー補足
