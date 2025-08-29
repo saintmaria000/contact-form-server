@@ -46,7 +46,7 @@ app.post('/send', async (req, res) => {
       subject: `8/30 AFF へご招待。`,
 
       // 本文（テキスト版）
-      text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
+      //text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
 
       // 本文（HTML版）
       html: `
