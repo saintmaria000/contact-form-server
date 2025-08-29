@@ -10,7 +10,8 @@ const app = express();
 const corsOptions = {
   origin: [
     "https://invitationtonewworld.web.app",
-    "https://invitationtonewworld.firebaseapp.com"],// フロントのURL
+    "https://invitationtonewworld.firebaseapp.com" // フロントのURL
+  ],
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 };
@@ -58,10 +59,10 @@ app.post('/send', async (req, res) => {
       // 本文（HTML版・画像埋め込み）
       html: `
         <p>あなたにささやかなご招待をお送りします 🎉</p>
-        // <p>
-        //   <img src="cid:invite@aff" alt="イベントフライヤー"
-        //        style="max-width:400px; border:1px solid #ccc;" />
-        // </p>
+        <p>
+          <img src="cid:invite@aff" alt="イベントフライヤー"
+               style="max-width:400px; border:1px solid #ccc;" />
+        </p>
       `,
 
       // 添付ファイル（本文埋め込み用）
