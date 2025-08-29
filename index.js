@@ -27,17 +27,16 @@ app.post('/send', async (req, res) => {
   const { name, email } = req.body;
 
   try {
-    const response = await fetch("https://smtp.maileroo.com/api/v2/emails", {
+    const response = await fetch("https://api.maileroo.com/api/v2/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.MAILEROO_API_KEY}` // ← MailerooのAPIキー
+        "Authorization": Bearer ${process.env.MAILEROO_API_KEY} // ← MailerooのAPIキー
       },
       body: JSON.stringify({
-        from: `<${process.env.FROM_ADDRESS}>`, 
-        to: [{email: email}],
+        from: { address: process.env.FROM_ADDRESS },  // ← オブジェクト形式に修正
+        to: [{ address: email }],                     // ← email → address に修正
         subject: "8/30 AFF へのご招待。",
-        text: `こんにちは ${name} さん！\n\nあなたを以下のパーティーにご招待します🎉\n\n`,
         html: `
           <p>こんにちは ${name} さん！</p>
           <p>あなたを以下のパーティーにご招待します 🎉</p>
@@ -64,7 +63,7 @@ app.post('/send', async (req, res) => {
       success: false,
       error: error.message || JSON.stringify(error)
     });
-  } // ← このカッコを追加
+  }
 });
 
 // エラー補足
