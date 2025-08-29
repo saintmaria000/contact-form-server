@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/send', async (req, res) => {
-  const { name, email, message } = req.body;
+  const { name, email } = req.body;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -39,29 +39,20 @@ app.post('/send', async (req, res) => {
       }
     });
 
-    // ✅ SMTP接続確認（エラーが出たらログに出る）
-    transporter.verify((err, success) => {
-      if (err) {
-        console.error("SMTP接続失敗:", err);
-      } else {
-        console.log("SMTP接続成功!");
-      }
-    });
-
     await transporter.sendMail({
       from: process.env.SMTP_USER,
       to: email,
       subject: `8/30 AFF　こんにちは ${name} さん！`,
       
       // 本文（テキスト版）
-      text: `あなたを以下のパーティーにご招待します。🎉\n\n`,
+      text: `あなたを以下のパーティーにご招待します🎉\n\n`,
 
       // 本文（HTML版・画像埋め込み）
       html: `
-        <p>
-          <img src="cid:invite@aff" alt="イベントフライヤー"
-               style="max-width:400px; border:1px solid #ccc;" />
-        </p>
+        // <p>
+        //   <img src="cid:invite@aff" alt="イベントフライヤー"
+        //        style="max-width:400px; border:1px solid #ccc;" />
+        // </p>
       `,
 
       // 添付ファイル（本文埋め込み用）
@@ -78,6 +69,25 @@ app.post('/send', async (req, res) => {
   } catch (error) {
     console.error('メール送信エラー:', error);
     res.status(500).send({ success: false, error: error.message });
+  }
+});
+
+// ✅ サーバー起動時にSMTP接続テスト
+const testTransporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: parseInt(process.env.SMTP_PORT),
+  secure: process.env.SMTP_SECURE === 'true',
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS
+  }
+});
+
+testTransporter.verify((err, success) => {
+  if (err) {
+    console.error("SMTP接続失敗:", err);
+  } else {
+    console.log("SMTP接続成功!");
   }
 });
 
