@@ -61,12 +61,12 @@ app.post('/send', async (req, res) => {
       `,
 
       // 添付ファイル（本文埋め込み用）
-      attachments: [
-        {
-          filename: 'flyer.jpg',
-          path: path.join(__dirname, 'images', 'flyer.jpg'),
-          cid: 'invite@aff'
-        }
+      // attachments: [
+      //   {
+      //     filename: 'flyer.jpg',
+      //     path: path.join(__dirname, 'images', 'flyer.jpg'),
+      //     cid: 'invite@aff'
+      //   }
       ]
     });
 
