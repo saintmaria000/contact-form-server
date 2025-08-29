@@ -53,7 +53,7 @@ app.post('/send', async (req, res) => {
       subject: `8/30 AFF　こんにちは ${name} さん！`,
       
       // 本文（テキスト版）
-      text: `あなたを以下のパーティーにご招待します。\n\n${message || ''}`,
+      text: `あなたを以下のパーティーにご招待します。\n\n`,
 
       // 本文（HTML版・画像埋め込み）
       html: `
@@ -62,7 +62,6 @@ app.post('/send', async (req, res) => {
         //   <img src="cid:invite@aff" alt="イベントフライヤー"
         //        style="max-width:400px; border:1px solid #ccc;" />
         // </p>
-        <p>${message || ''}</p>
       `,
 
       // 添付ファイル（本文埋め込み用）
