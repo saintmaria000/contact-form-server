@@ -6,13 +6,15 @@ const path = require('path'); // ← 画像添付用に追加
 
 const app = express();
 
+// ✅ CORS設定
 const corsOptions = {
   origin: "https://invitationtonewworld.web.app", // フロントのURL
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 };
-
 app.use(cors(corsOptions));
+app.options('/send', cors(corsOptions)); // ← プリフライト対応
+
 app.use(express.json());
 
 // 動作確認用
@@ -34,7 +36,7 @@ app.post('/send', async (req, res) => {
       }
     });
 
-    // 🔍 ここを追加（接続確認）
+    // ✅ SMTP接続確認（エラーが出たらログに出る）
     transporter.verify((err, success) => {
       if (err) {
         console.error("SMTP接続失敗:", err);
@@ -47,6 +49,7 @@ app.post('/send', async (req, res) => {
       from: process.env.SMTP_USER,
       to: email,
       subject: `8/30 AFF　こんにちは ${name} さん！`,
+      
       // 本文（テキスト版）
       text: `あなたを以下のパーティーにご招待します。\n\n${message || ''}`,
 
@@ -61,12 +64,12 @@ app.post('/send', async (req, res) => {
       `,
 
       // 添付ファイル（本文埋め込み用）
-      // attachments: [
-      //   {
-      //     filename: 'flyer.jpg',
-      //     path: path.join(__dirname, 'images', 'flyer.jpg'),
-      //     cid: 'invite@aff'
-      //   }
+      attachments: [
+        {
+          filename: 'flyer.jpg',
+          path: path.join(__dirname, 'images', 'flyer.jpg'), // ← サーバー内の画像パス
+          cid: 'invite@aff' // ← 上のHTMLと一致
+        }
       ]
     });
 
@@ -81,7 +84,6 @@ app.post('/send', async (req, res) => {
 process.on('uncaughtException', err => {
   console.error('Uncaught Exception:', err);
 });
-
 process.on('unhandledRejection', err => {
   console.error('Unhandled Rejection:', err);
 });
